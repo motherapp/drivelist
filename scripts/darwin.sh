@@ -8,7 +8,7 @@ function get_until_paren {
   awk 'match($0, "\\(|$"){ print substr($0, 0, RSTART - 1) }'
 }
 
-DISKS="`diskutil list | grep '^\/' | get_until_paren`"
+DISKS="`df -Hl | grep '^\/' | awk -F ' +' '{ print $1 }' | awk -F '/' '{ print $3 }'`"
 
 for disk in $DISKS; do
   diskinfo="`diskutil info $disk`"
